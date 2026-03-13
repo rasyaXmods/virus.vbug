@@ -1,0 +1,1523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔴 MATRYOSHKA C2 v9.0 - NUCLEAR COMMAND CENTER</title>
+    
+    <!-- 🔴 META EKSTREM -->
+    <meta name="description" content="MATRYOSHKA C2 - Advanced Malware Command & Control">
+    <meta name="author" content="ZmZ">
+    <meta name="color-scheme" content="dark">
+    <meta http-equiv="Content-Security-Policy" content="default-src * self 'unsafe-inline' 'unsafe-eval' data: blob:;">
+    
+    <!-- 🔴 FONTS & ICONS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <!-- 🔴 EKSTREM STYLE -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Share Tech Mono', monospace;
+        }
+        
+        body {
+            background: #000000;
+            color: #ff0000;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* 🔴 Matrix Background */
+        #matrixCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.15;
+            pointer-events: none;
+        }
+        
+        /* 🔴 Nuclear Pulse */
+        .nuclear-pulse {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, #ff000022, #000000);
+            z-index: -1;
+            animation: nuclearPulse 5s infinite;
+        }
+        
+        @keyframes nuclearPulse {
+            0% { opacity: 0.3; }
+            50% { opacity: 0.8; }
+            100% { opacity: 0.3; }
+        }
+        
+        /* 🔴 Container */
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* 🔴 Header */
+        .header {
+            background: rgba(20,0,0,0.95);
+            border: 3px solid #ff0000;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 0 50px #ff0000;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+        
+        .header::before {
+            content: "☢️☢️☢️ NUCLEAR LAUNCH DETECTED ☢️☢️☢️";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            right: -50%;
+            bottom: -50%;
+            background: linear-gradient(45deg, transparent 30%, #ff0000 50%, transparent 70%);
+            animation: nuclearScan 3s linear infinite;
+            opacity: 0.1;
+            pointer-events: none;
+        }
+        
+        @keyframes nuclearScan {
+            0% { transform: rotate(0deg) scale(1); }
+            100% { transform: rotate(360deg) scale(2); }
+        }
+        
+        .header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3.5em;
+            font-weight: 900;
+            color: #ff0000;
+            text-shadow: 0 0 30px #ff0000, 0 0 60px #ff6600;
+            letter-spacing: 10px;
+            animation: textFlicker 3s infinite;
+        }
+        
+        @keyframes textFlicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+        
+        .header .subtitle {
+            color: #ff6666;
+            font-size: 1.2em;
+            margin-top: 15px;
+            letter-spacing: 5px;
+        }
+        
+        /* 🔴 Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: rgba(30,0,0,0.9);
+            border: 2px solid #ff0000;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+        }
+        
+        .stat-card::before {
+            content: "🔴";
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            font-size: 60px;
+            opacity: 0.1;
+            transform: rotate(20deg);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 0 40px #ff0000;
+            border-color: #ff6600;
+        }
+        
+        .stat-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #ff0000;
+            text-shadow: 0 0 20px #ff0000;
+            animation: valuePulse 2s infinite;
+        }
+        
+        @keyframes valuePulse {
+            0% { text-shadow: 0 0 20px #ff0000; }
+            50% { text-shadow: 0 0 40px #ff6600; }
+            100% { text-shadow: 0 0 20px #ff0000; }
+        }
+        
+        .stat-label {
+            color: #ff8888;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 5px;
+        }
+        
+        /* 🔴 Navigation */
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .nav-btn {
+            background: transparent;
+            border: 2px solid #ff0000;
+            color: #ff0000;
+            padding: 15px 10px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+        
+        .nav-btn::before {
+            content: "▶";
+            position: absolute;
+            left: -30px;
+            transition: 0.3s;
+            color: #ff6600;
+        }
+        
+        .nav-btn:hover {
+            background: #ff0000;
+            color: #000;
+            box-shadow: 0 0 30px #ff0000;
+            transform: scale(1.05);
+        }
+        
+        .nav-btn:hover::before {
+            left: 10px;
+        }
+        
+        .nav-btn.active {
+            background: #ff0000;
+            color: #000;
+            box-shadow: 0 0 30px #ff0000;
+        }
+        
+        /* 🔴 Content */
+        .content {
+            background: rgba(10,0,0,0.95);
+            border: 3px solid #ff0000;
+            border-radius: 25px;
+            padding: 30px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 50px #ff0000;
+            animation: contentGlow 5s infinite;
+        }
+        
+        @keyframes contentGlow {
+            0% { box-shadow: 0 0 50px #ff0000; }
+            50% { box-shadow: 0 0 80px #ff6600; }
+            100% { box-shadow: 0 0 50px #ff0000; }
+        }
+        
+        /* 🔴 Command Line */
+        .cmd-line {
+            background: #0a0000;
+            border: 3px solid #ff0000;
+            border-radius: 15px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            box-shadow: inset 0 0 30px #330000;
+        }
+        
+        .prompt {
+            color: #ffff00;
+            font-size: 1.3em;
+            font-weight: bold;
+            text-shadow: 0 0 10px #ffff00;
+        }
+        
+        .cmd-input {
+            background: transparent;
+            border: none;
+            color: #ff0000;
+            font-size: 1.2em;
+            flex: 1;
+            outline: none;
+            font-family: 'Share Tech Mono', monospace;
+        }
+        
+        .cmd-input::placeholder {
+            color: #330000;
+        }
+        
+        .cmd-suggest {
+            color: #ff6600;
+            font-size: 0.9em;
+            padding: 5px 10px;
+            border-left: 2px solid #ff0000;
+        }
+        
+        /* 🔴 Tables */
+        .table-container {
+            overflow-x: auto;
+            border: 3px solid #ff0000;
+            border-radius: 15px;
+            margin: 30px 0;
+            background: #0a0000;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1200px;
+        }
+        
+        th {
+            background: #330000;
+            color: #ffff00;
+            padding: 18px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-bottom: 3px solid #ff0000;
+            font-size: 0.95em;
+        }
+        
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #330000;
+            color: #ff8888;
+        }
+        
+        tr {
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        
+        tr:hover {
+            background: #1a0000;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        .online { background: #00ff00; box-shadow: 0 0 20px #00ff00; }
+        .idle { background: #ffff00; box-shadow: 0 0 20px #ffff00; }
+        .offline { background: #ff0000; box-shadow: 0 0 20px #ff0000; }
+        .nuked { background: #ff6600; box-shadow: 0 0 20px #ff6600; }
+        
+        /* 🔴 Action Buttons */
+        .action-group {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            background: transparent;
+            border: 2px solid #ff0000;
+            color: #ff0000;
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: 0.3s;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+        
+        .btn:hover {
+            background: #ff0000;
+            color: #000;
+            transform: scale(1.1);
+            box-shadow: 0 0 20px #ff0000;
+        }
+        
+        .btn-danger {
+            border-color: #ff6600;
+            color: #ff6600;
+        }
+        
+        .btn-danger:hover {
+            background: #ff6600;
+            color: #000;
+            box-shadow: 0 0 20px #ff6600;
+        }
+        
+        .btn-nuclear {
+            border-color: #ff0000;
+            color: #ff0000;
+            animation: nuclearBtn 1s infinite;
+        }
+        
+        @keyframes nuclearBtn {
+            0% { border-color: #ff0000; color: #ff0000; }
+            50% { border-color: #ffff00; color: #ffff00; }
+            100% { border-color: #ff0000; color: #ff0000; }
+        }
+        
+        /* 🔴 Grid Layouts */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+            margin: 25px 0;
+        }
+        
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin: 25px 0;
+        }
+        
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+            margin: 25px 0;
+        }
+        
+        /* 🔴 Cards */
+        .card {
+            background: #0a0000;
+            border: 2px solid #ff0000;
+            border-radius: 15px;
+            padding: 25px;
+            transition: 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 30px #ff0000;
+        }
+        
+        .card-title {
+            color: #ffff00;
+            font-size: 1.3em;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ff0000;
+            padding-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        /* 🔴 Data Panels */
+        .data-panel {
+            background: #0a0000;
+            border: 2px solid #ff0000;
+            border-radius: 12px;
+            padding: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .data-item {
+            padding: 10px;
+            border-bottom: 1px dotted #330000;
+            display: flex;
+            justify-content: space-between;
+            animation: slideIn 0.5s;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .data-key {
+            color: #ffff00;
+            font-weight: bold;
+        }
+        
+        .data-value {
+            color: #ff0000;
+        }
+        
+        /* 🔴 Progress Bars */
+        .progress {
+            background: #1a0000;
+            border: 2px solid #ff0000;
+            height: 25px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff0000, #ff6600);
+            width: 0%;
+            transition: width 0.5s;
+            position: relative;
+            animation: progressGlow 2s infinite;
+        }
+        
+        @keyframes progressGlow {
+            0% { opacity: 1; }
+            50% { opacity: 0.8; }
+            100% { opacity: 1; }
+        }
+        
+        /* 🔴 Logs */
+        .logs {
+            background: #0a0000;
+            border: 2px solid #ff0000;
+            border-radius: 12px;
+            padding: 20px;
+            height: 400px;
+            overflow-y: auto;
+        }
+        
+        .log-entry {
+            color: #ff8888;
+            border-bottom: 1px dotted #330000;
+            padding: 8px 0;
+            font-family: 'Share Tech Mono', monospace;
+            animation: logAppear 0.5s;
+        }
+        
+        @keyframes logAppear {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .log-time {
+            color: #ffff00;
+            margin-right: 15px;
+        }
+        
+        .log-critical {
+            color: #ff0000;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        
+        /* 🔴 Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.98);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+        
+        .modal.active {
+            display: flex;
+            animation: modalAppear 0.5s;
+        }
+        
+        @keyframes modalAppear {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        .modal-content {
+            background: #1a0000;
+            border: 4px solid #ff0000;
+            border-radius: 30px;
+            padding: 40px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 0 100px #ff0000;
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: #ff0000;
+            font-size: 35px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        
+        .modal-close:hover {
+            transform: rotate(90deg);
+            color: #ffff00;
+        }
+        
+        /* 🔴 Loader */
+        .nuclear-loader {
+            width: 80px;
+            height: 80px;
+            border: 8px solid #330000;
+            border-top: 8px solid #ff0000;
+            border-radius: 50%;
+            animation: nuclearSpin 1s linear infinite, nuclearGlow 1s infinite;
+            margin: 30px auto;
+        }
+        
+        @keyframes nuclearSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes nuclearGlow {
+            0% { box-shadow: 0 0 30px #ff0000; }
+            50% { box-shadow: 0 0 60px #ff6600; }
+            100% { box-shadow: 0 0 30px #ff0000; }
+        }
+        
+        /* 🔴 Responsive */
+        @media (max-width: 1200px) {
+            .stats-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .nav-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .stats-grid,
+            .nav-grid,
+            .grid-2,
+            .grid-3,
+            .grid-4 {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .cmd-line {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .cmd-suggest {
+                border-left: none;
+                border-top: 2px solid #ff0000;
+                padding: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="matrixCanvas"></canvas>
+    <div class="nuclear-pulse"></div>
+    
+    <div class="container">
+        <!-- 🔴 HEADER -->
+        <div class="header">
+            <h1>☢️ MATRYOSHKA C2 v9.0 ☢️</h1>
+            <div class="subtitle">NUCLEAR COMMAND CENTER | EKSTREM EDITION</div>
+        </div>
+        
+        <!-- 🔴 STATS GRID -->
+        <div class="stats-grid">
+            <div class="stat-card" onclick="filter('all')">
+                <div class="stat-value" id="totalVictims">247</div>
+                <div class="stat-label">TOTAL VICTIMS</div>
+            </div>
+            <div class="stat-card" onclick="filter('online')">
+                <div class="stat-value" id="onlineVictims">184</div>
+                <div class="stat-label">ONLINE</div>
+            </div>
+            <div class="stat-card" onclick="filter('nuked')">
+                <div class="stat-value" id="nukedVictims">23</div>
+                <div class="stat-label">NUKED</div>
+            </div>
+            <div class="stat-card" onclick="filter('data')">
+                <div class="stat-value" id="totalData">6.4GB</div>
+                <div class="stat-label">STOLEN DATA</div>
+            </div>
+            <div class="stat-card" onclick="filter('ransom')">
+                <div class="stat-value" id="ransomAmount">₿ 2.4</div>
+                <div class="stat-label">RANSOMWARE</div>
+            </div>
+            <div class="stat-card" onclick="filter('c2')">
+                <div class="stat-value" id="c2Status">ON</div>
+                <div class="stat-label">C2 STATUS</div>
+            </div>
+        </div>
+        
+        <!-- 🔴 NAVIGATION -->
+        <div class="nav-grid">
+            <button class="nav-btn active" onclick="showSection('dashboard')">
+                <i class="fas fa-tachometer-alt"></i> DASH
+            </button>
+            <button class="nav-btn" onclick="showSection('victims')">
+                <i class="fas fa-skull"></i> VICTIMS
+            </button>
+            <button class="nav-btn" onclick="showSection('commands')">
+                <i class="fas fa-terminal"></i> CMD
+            </button>
+            <button class="nav-btn" onclick="showSection('builder')">
+                <i class="fas fa-hammer"></i> BUILDER
+            </button>
+            <button class="nav-btn" onclick="showSection('data')">
+                <i class="fas fa-database"></i> DATA
+            </button>
+            <button class="nav-btn" onclick="showSection('logs')">
+                <i class="fas fa-history"></i> LOGS
+            </button>
+            <button class="nav-btn" onclick="showSection('stats')">
+                <i class="fas fa-chart-line"></i> STATS
+            </button>
+            <button class="nav-btn" onclick="showSection('settings')">
+                <i class="fas fa-cog"></i> SET
+            </button>
+        </div>
+        
+        <!-- 🔴 COMMAND LINE -->
+        <div class="cmd-line">
+            <span class="prompt">☢️ NUCLEAR&gt;</span>
+            <input type="text" class="cmd-input" id="mainCommand" placeholder="Enter command... (type 'help' for commands)" autocomplete="off">
+            <span class="cmd-suggest">[nuke, steal, ransom, spread]</span>
+        </div>
+        
+        <!-- 🔴 DASHBOARD SECTION -->
+        <div id="section-dashboard" class="content">
+            <div class="grid-2">
+                <!-- System Stats -->
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-microchip"></i> SYSTEM STATS</div>
+                    <div class="data-item"><span class="data-key">CPU Usage:</span> <span class="data-value">67%</span></div>
+                    <div class="progress"><div class="progress-fill" style="width:67%"></div></div>
+                    
+                    <div class="data-item"><span class="data-key">Memory:</span> <span class="data-value">3.2/8GB</span></div>
+                    <div class="progress"><div class="progress-fill" style="width:40%"></div></div>
+                    
+                    <div class="data-item"><span class="data-key">Network In:</span> <span class="data-value">24.5 MB/s</span></div>
+                    <div class="progress"><div class="progress-fill" style="width:85%"></div></div>
+                    
+                    <div class="data-item"><span class="data-key">Network Out:</span> <span class="data-value">12.3 MB/s</span></div>
+                    <div class="progress"><div class="progress-fill" style="width:45%"></div></div>
+                    
+                    <div class="data-item"><span class="data-key">Uptime:</span> <span class="data-value">27d 14h 32m</span></div>
+                </div>
+                
+                <!-- Recent Victims -->
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-user-secret"></i> RECENT VICTIMS</div>
+                    <div class="logs" style="height: 300px;">
+                        <div class="log-entry"><span class="log-time">[13:47]</span> Samsung S23 Ultra - Jakarta</div>
+                        <div class="log-entry"><span class="log-time">[13:42]</span> Xiaomi Redmi Note 12 - Surabaya</div>
+                        <div class="log-entry"><span class="log-time">[13:38]</span> Google Pixel 8 - Bandung</div>
+                        <div class="log-entry"><span class="log-time">[13:35]</span> iPhone 15 - Bali</div>
+                        <div class="log-entry"><span class="log-time">[13:31]</span> Oppo Find X6 - Medan</div>
+                        <div class="log-entry"><span class="log-time">[13:28]</span> Vivo X90 - Semarang</div>
+                    </div>
+                </div>
+                
+                <!-- Top Countries -->
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-globe"></i> TOP COUNTRIES</div>
+                    <div class="data-item"><span class="data-key">🇮🇩 Indonesia:</span> <span class="data-value">89</span></div>
+                    <div class="progress"><div class="progress-fill" style="width:89%"></div></div>
+                    
+                    <div class="data-item"><span class="data-key">🇺🇸 USA:</span> <span class="data-value">45</span></div>
+                    <div class="progress"><div class="progress-fill" style="width:45%"></div></div>
+                    
+                    <div class="data-item"><span class="data-key">🇧🇷 Brazil:</span> <span class="data-value">34</span></div>
+                    <div class="progress"><div class="progress-fill" style="width:34%"></div></div>
+                    
+                    <div class="data-item"><span class="data-key">🇮🇳 India:</span> <span class="data-value">28</span></div>
+                    <div class="progress"><div class="progress-fill" style="width:28%"></div></div>
+                    
+                    <div class="data-item"><span class="data-key">🇷🇺 Russia:</span> <span class="data-value">21</span></div>
+                    <div class="progress"><div class="progress-fill" style="width:21%"></div></div>
+                </div>
+                
+                <!-- Android Versions -->
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-robot"></i> ANDROID VERSIONS</div>
+                    <div class="data-item"><span class="data-key">Android 15:</span> <span class="data-value">42%</span></div>
+                    <div class="progress"><div class="progress-fill" style="width:42%"></div></div>
+                    
+                    <div class="data-item"><span class="data-key">Android 14:</span> <span class="data-value">31%</span></div>
+                    <div class="progress"><div class="progress-fill" style="width:31%"></div></div>
+                    
+                    <div class="data-item"><span class="data-key">Android 13:</span> <span class="data-value">18%</span></div>
+                    <div class="progress"><div class="progress-fill" style="width:18%"></div></div>
+                    
+                    <div class="data-item"><span class="data-key">Android 12:</span> <span class="data-value">9%</span></div>
+                    <div class="progress"><div class="progress-fill" style="width:9%"></div></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 🔴 VICTIMS SECTION -->
+        <div id="section-victims" class="content" style="display:none">
+            <div class="cmd-line">
+                <span class="prompt">💀 VICTIM&gt;</span>
+                <input type="text" class="cmd-input" id="victimSearch" placeholder="Search by IP, device, country...">
+                <button class="btn" onclick="searchVictims()"><i class="fas fa-search"></i> SEARCH</button>
+                <button class="btn" onclick="refreshVictims()"><i class="fas fa-sync"></i> REFRESH</button>
+                <button class="btn btn-danger" onclick="bulkAction('select')"><i class="fas fa-check-square"></i> SELECT ALL</button>
+            </div>
+            
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" onclick="toggleAll(this)"></th>
+                            <th>STATUS</th>
+                            <th>IP ADDRESS</th>
+                            <th>DEVICE</th>
+                            <th>ANDROID</th>
+                            <th>COUNTRY</th>
+                            <th>DATA</th>
+                            <th>LAST SEEN</th>
+                            <th>ACTIONS</th>
+                        </tr>
+                    </thead>
+                    <tbody id="victimsTable">
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td><span class="status-badge online"></span> Online</td>
+                            <td>192.168.1.105</td>
+                            <td>Samsung S23 Ultra</td>
+                            <td>14</td>
+                            <td>🇮🇩 Indonesia</td>
+                            <td>156 files</td>
+                            <td>Just now</td>
+                            <td class="action-group">
+                                <button class="btn" title="Shell"><i class="fas fa-terminal"></i></button>
+                                <button class="btn" title="Steal"><i class="fas fa-download"></i></button>
+                                <button class="btn" title="Location"><i class="fas fa-map-marker-alt"></i></button>
+                                <button class="btn-danger" title="Nuke"><i class="fas fa-bomb"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td><span class="status-badge online"></span> Online</td>
+                            <td>10.0.0.23</td>
+                            <td>Xiaomi Redmi Note 12</td>
+                            <td>13</td>
+                            <td>🇮🇩 Indonesia</td>
+                            <td>89 files</td>
+                            <td>2 min ago</td>
+                            <td class="action-group">
+                                <button class="btn"><i class="fas fa-terminal"></i></button>
+                                <button class="btn"><i class="fas fa-download"></i></button>
+                                <button class="btn"><i class="fas fa-map-marker-alt"></i></button>
+                                <button class="btn-danger"><i class="fas fa-bomb"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td><span class="status-badge idle"></span> Idle</td>
+                            <td>172.16.0.45</td>
+                            <td>Google Pixel 8</td>
+                            <td>15</td>
+                            <td>🇺🇸 USA</td>
+                            <td>234 files</td>
+                            <td>15 min ago</td>
+                            <td class="action-group">
+                                <button class="btn"><i class="fas fa-terminal"></i></button>
+                                <button class="btn"><i class="fas fa-download"></i></button>
+                                <button class="btn"><i class="fas fa-map-marker-alt"></i></button>
+                                <button class="btn-danger"><i class="fas fa-bomb"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td><span class="status-badge nuked"></span> Nuked</td>
+                            <td>192.168.0.67</td>
+                            <td>iPhone 15</td>
+                            <td>iOS 17</td>
+                            <td>🇯🇵 Japan</td>
+                            <td>0 files</td>
+                            <td>Destroyed</td>
+                            <td class="action-group">
+                                <button class="btn" disabled><i class="fas fa-terminal"></i></button>
+                                <button class="btn" disabled><i class="fas fa-download"></i></button>
+                                <button class="btn" disabled><i class="fas fa-map-marker-alt"></i></button>
+                                <button class="btn-danger" disabled><i class="fas fa-bomb"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div style="display: flex; gap: 15px; margin-top: 25px; flex-wrap: wrap;">
+                <button class="btn" onclick="bulkAction('shell')"><i class="fas fa-terminal"></i> SHELL SELECTED</button>
+                <button class="btn" onclick="bulkAction('steal')"><i class="fas fa-download"></i> STEAL DATA</button>
+                <button class="btn" onclick="bulkAction('location')"><i class="fas fa-map-marker-alt"></i> GET LOCATION</button>
+                <button class="btn" onclick="bulkAction('screenshot')"><i class="fas fa-camera"></i> SCREENSHOT</button>
+                <button class="btn btn-danger" onclick="bulkAction('ransomware')"><i class="fas fa-lock"></i> RANSOMWARE</button>
+                <button class="btn btn-danger" onclick="bulkAction('nuke')"><i class="fas fa-bomb"></i> NUKE</button>
+            </div>
+        </div>
+        
+        <!-- 🔴 COMMANDS SECTION -->
+        <div id="section-commands" class="content" style="display:none">
+            <div class="grid-3">
+                <!-- System Commands -->
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-desktop"></i> SYSTEM</div>
+                    <button class="btn" style="width:100%; margin:8px 0"><i class="fas fa-terminal"></i> Shell Access</button>
+                    <button class="btn" style="width:100%; margin:8px 0"><i class="fas fa-info-circle"></i> Device Info</button>
+                    <button class="btn" style="width:100%; margin:8px 0"><i class="fas fa-tasks"></i> Process List</button>
+                    <button class="btn" style="width:100%; margin:8px 0"><i class="fas fa-apps"></i> Installed Apps</button>
+                    <button class="btn" style="width:100%; margin:8px 0"><i class="fas fa-battery-full"></i> Battery Status</button>
+                </div>
+                
+                <!-- Stealer Commands -->
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-database"></i> STEALER</div>
+                    <button class="btn" style="width:100%; margin:8px 0"><i class="fas fa-envelope"></i> SMS/OTP</button>
+                    <button class="btn" style="width:100%; margin:8px 0"><i class="fas fa-address-book"></i> Contacts</button>
+                    <button class="btn" style="width:100%; margin:8px 0"><i class="fas fa-phone"></i> Call Logs</button>
+                    <button class="btn" style="width:100%; margin:8px 0"><i class="fas fa-map-marker-alt"></i> Location</button>
+                    <button class="btn" style="width:100%; margin:8px 0"><i class="fas fa-wifi"></i> WiFi Passwords</button>
+                    <button class="btn" style="width:100%; margin:8px 0"><i class="fas fa-key"></i> Browser Passwords</button>
+                    <button class="btn" style="width:100%; margin:8px 0"><i class="fas fa-file"></i> All Files</button>
+                </div>
+                
+                <!-- Attack Commands -->
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-bolt"></i> ATTACK</div>
+                    <button class="btn btn-danger" style="width:100%; margin:8px 0"><i class="fas fa-lock"></i> Ransomware</button>
+                    <button class="btn btn-danger" style="width:100%; margin:8px 0"><i class="fas fa-bug"></i> Spread Worm</button>
+                    <button class="btn btn-danger" style="width:100%; margin:8px 0"><i class="fas fa-network-wired"></i> DDoS Attack</button>
+                    <button class="btn btn-danger" style="width:100%; margin:8px 0"><i class="fas fa-coins"></i> Crypto Miner</button>
+                    <button class="btn btn-danger" style="width:100%; margin:8px 0"><i class="fas fa-keyboard"></i> Keylogger</button>
+                    <button class="btn btn-danger" style="width:100%; margin:8px 0"><i class="fas fa-camera"></i> Webcam</button>
+                    <button class="btn btn-danger" style="width:100%; margin:8px 0"><i class="fas fa-microphone"></i> Microphone</button>
+                </div>
+                
+                <!-- Banking Trojans -->
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-university"></i> BANKING</div>
+                    <button class="btn" style="width:100%; margin:8px 0"><i class="fas fa-bank"></i> BCA Inject</button>
+                    <button class="btn" style="width:100%; margin:8px 0"><i class="fas fa-bank"></i> Mandiri Inject</button>
+                    <button class="btn" style="width:100%; margin:8px 0"><i class="fas fa-bank"></i> BRI Inject</button>
+                    <button class="btn" style="width:100%; margin:8px 0"><i class="fas fa-bank"></i> BNI Inject</button>
+                    <button class="btn" style="width:100%; margin:8px 0"><i class="fas fa-credit-card"></i> Credit Card Steal</button>
+                    <button class="btn" style="width:100%; margin:8px 0"><i class="fas fa-exchange-alt"></i> OTP Forward</button>
+                </div>
+                
+                <!-- Remote Access -->
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-remote"></i> RAT</div>
+                    <button class="btn" style="width:100%; margin:8px 0"><i class="fas fa-eye"></i> Start VNC</button>
+                    <button class="btn" style="width:100%; margin:8px 0"><i class="fas fa-terminal"></i> Full Shell</button>
+                    <button class="btn" style="width:100%; margin:8px 0"><i class="fas fa-folder-open"></i> File Manager</button>
+                    <button class="btn" style="width:100%; margin:8px 0"><i class="fas fa-upload"></i> Upload File</button>
+                    <button class="btn" style="width:100%; margin:8px 0"><i class="fas fa-download"></i> Download File</button>
+                    <button class="btn" style="width:100%; margin:8px 0"><i class="fas fa-trash"></i> Delete File</button>
+                </div>
+                
+                <!-- Danger Zone -->
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-exclamation-triangle"></i> DANGER ZONE</div>
+                    <button class="btn btn-danger" style="width:100%; margin:8px 0"><i class="fas fa-lock"></i> Lock Device</button>
+                    <button class="btn btn-danger" style="width:100%; margin:8px 0"><i class="fas fa-eraser"></i> Wipe Data</button>
+                    <button class="btn btn-danger" style="width:100%; margin:8px 0"><i class="fas fa-fire"></i> Brick Device</button>
+                    <button class="btn btn-danger" style="width:100%; margin:8px 0"><i class="fas fa-redo-alt"></i> Factory Reset</button>
+                    <button class="btn btn-nuclear" style="width:100%; margin:8px 0" onclick="openNuclearModal()"><i class="fas fa-radiation"></i> SELF DESTRUCT</button>
+                </div>
+            </div>
+            
+            <div class="cmd-line" style="margin-top: 30px;">
+                <span class="prompt">⚡ EXEC&gt;</span>
+                <input type="text" class="cmd-input" id="customCommand" placeholder="Enter custom command...">
+                <button class="btn" onclick="executeCommand()"><i class="fas fa-play"></i> EXECUTE</button>
+            </div>
+        </div>
+        
+        <!-- 🔴 BUILDER SECTION -->
+        <div id="section-builder" class="content" style="display:none">
+            <div class="grid-2">
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-hammer"></i> PAYLOAD CONFIGURATION</div>
+                    
+                    <div class="data-item">Platform:</div>
+                    <select style="width:100%; background:#1a0000; color:#ff0000; border:2px solid #ff0000; padding:12px; margin:10px 0; border-radius:8px;">
+                        <option>Android APK (ARM64)</option>
+                        <option>Android APK (ARMv7)</option>
+                        <option>Android APK (x86)</option>
+                        <option>Windows EXE (x64)</option>
+                        <option>Windows EXE (x86)</option>
+                        <option>Linux ELF</option>
+                        <option>macOS MachO</option>
+                    </select>
+                    
+                    <div class="data-item">C2 Server:</div>
+                    <input type="text" value="2407:0:3002:fd75:8a22:ab97:5140:ccd8:4444" style="width:100%; background:#1a0000; color:#ff0000; border:2px solid #ff0000; padding:12px; margin:10px 0; border-radius:8px;">
+                    
+                    <div class="data-item">Obfuscation Level:</div>
+                    <select style="width:100%; background:#1a0000; color:#ff0000; border:2px solid #ff0000; padding:12px; margin:10px 0; border-radius:8px;">
+                        <option>Level 1 - Basic</option>
+                        <option>Level 2 - Moderate</option>
+                        <option>Level 3 - Advanced</option>
+                        <option>Level 4 - Extreme</option>
+                        <option selected>Level 5 - 🔴 EKSTREM</option>
+                    </select>
+                    
+                    <div class="data-item">Features:</div>
+                    <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin:15px 0;">
+                        <label><input type="checkbox" checked> Persistence</label>
+                        <label><input type="checkbox" checked> Stealer</label>
+                        <label><input type="checkbox" checked> Ransomware</label>
+                        <label><input type="checkbox" checked> Worm</label>
+                        <label><input type="checkbox" checked> Rootkit</label>
+                        <label><input type="checkbox" checked> Botnet</label>
+                        <label><input type="checkbox" checked> Spy</label>
+                        <label><input type="checkbox" checked> Banking</label>
+                        <label><input type="checkbox" checked> RAT</label>
+                        <label><input type="checkbox" checked> Polymorphic</label>
+                        <label><input type="checkbox" checked> Anti-VM</label>
+                        <label><input type="checkbox" checked> Keylogger</label>
+                    </div>
+                    
+                    <button class="btn" style="width:100%; padding:15px; margin-top:20px;" onclick="buildPayload()">
+                        <i class="fas fa-hammer"></i> BUILD PAYLOAD
+                    </button>
+                </div>
+                
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-code"></i> GENERATED PAYLOAD</div>
+                    <div class="data-panel" id="payloadOutput" style="height:500px; font-family:'Courier New', monospace;">
+                        // Payload will appear here after build
+                        // Size: 0KB
+                        // Detection rate: 0/60
+                        // Obfuscation: Level 5 EKSTREM
+                    </div>
+                    
+                    <div style="display:flex; gap:10px; margin-top:20px;">
+                        <button class="btn" style="flex:1" onclick="downloadPayload()"><i class="fas fa-download"></i> DOWNLOAD</button>
+                        <button class="btn" style="flex:1" onclick="copyPayload()"><i class="fas fa-copy"></i> COPY</button>
+                        <button class="btn btn-danger" style="flex:1" onclick="deployPayload()"><i class="fas fa-rocket"></i> DEPLOY</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 🔴 DATA SECTION -->
+        <div id="section-data" class="content" style="display:none">
+            <div class="grid-2">
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-folder-tree"></i> FILE BROWSER</div>
+                    <div class="data-panel" style="height:500px;">
+                        <div class="data-item" onclick="browseFolder('victim1')">
+                            <span class="data-key">📁 victim_192.168.1.105/</span>
+                            <span class="data-value">156 items</span>
+                        </div>
+                        <div class="data-item" style="padding-left:20px;" onclick="browseFolder('victim1/sms')">
+                            <span class="data-key"> 📁 sms/</span>
+                            <span class="data-value">34 items</span>
+                        </div>
+                        <div class="data-item" style="padding-left:20px;" onclick="browseFolder('victim1/contacts')">
+                            <span class="data-key"> 📁 contacts/</span>
+                            <span class="data-value">128 items</span>
+                        </div>
+                        <div class="data-item" style="padding-left:20px;" onclick="browseFolder('victim1/photos')">
+                            <span class="data-key"> 📁 photos/</span>
+                            <span class="data-value">67 items</span>
+                        </div>
+                        <div class="data-item" style="padding-left:20px;" onclick="browseFolder('victim1/documents')">
+                            <span class="data-key"> 📁 documents/</span>
+                            <span class="data-value">23 items</span>
+                        </div>
+                        <div class="data-item" style="padding-left:20px;" onclick="browseFolder('victim1/credentials')">
+                            <span class="data-key"> 📁 credentials/</span>
+                            <span class="data-value">15 items</span>
+                        </div>
+                        <div class="data-item" onclick="browseFolder('victim2')">
+                            <span class="data-key">📁 victim_10.0.0.23/</span>
+                            <span class="data-value">89 items</span>
+                        </div>
+                        <div class="data-item" onclick="browseFolder('victim3')">
+                            <span class="data-key">📁 victim_172.16.0.45/</span>
+                            <span class="data-value">234 items</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-eye"></i> PREVIEW</div>
+                    <div class="data-panel" id="filePreview" style="height:500px; font-family:'Courier New', monospace;">
+                        Select a file to preview
+                    </div>
+                </div>
+            </div>
+            
+            <div class="grid-2" style="margin-top:25px;">
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-key"></i> STOLEN CREDENTIALS</div>
+                    <div class="data-panel" style="height:300px;">
+                        <div class="data-item"><span class="data-key">facebook.com:</span> <span class="data-value">user@email.com:password123</span></div>
+                        <div class="data-item"><span class="data-key">gmail.com:</span> <span class="data-value">victim@gmail.com:Passw0rd!</span></div>
+                        <div class="data-item"><span class="data-key">bca.co.id:</span> <span class="data-value">12345678:bank123</span></div>
+                        <div class="data-item"><span class="data-key">mandiri.co.id:</span> <span class="data-value">87654321:mandiri456</span></div>
+                        <div class="data-item"><span class="data-key">tokopedia.com:</span> <span class="data-value">tokouser:tokopedia789</span></div>
+                        <div class="data-item"><span class="data-key">shopee.co.id:</span> <span class="data-value">shopeebuyer:shopeepass</span></div>
+                        <div class="data-item"><span class="data-key">wifi_rumah:</span> <span class="data-value">WifiRumah:rumah123</span></div>
+                        <div class="data-item"><span class="data-key">wifi_kantor:</span> <span class="data-value">KantorWiFi:kantor@2026</span></div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-image"></i> MEDIA FILES</div>
+                    <div class="data-panel" style="height:300px;">
+                        <div class="data-item"><span class="data-key">IMG_20260313_154522.jpg</span> <span class="data-value">2.3 MB</span> <button class="btn" style="padding:2px 5px"><i class="fas fa-download"></i></button></div>
+                        <div class="data-item"><span class="data-key">IMG_20260313_124311.jpg</span> <span class="data-value">1.8 MB</span> <button class="btn" style="padding:2px 5px"><i class="fas fa-download"></i></button></div>
+                        <div class="data-item"><span class="data-key">VID_20260312_223045.mp4</span> <span class="data-value">15.7 MB</span> <button class="btn" style="padding:2px 5px"><i class="fas fa-download"></i></button></div>
+                        <div class="data-item"><span class="data-key">VID_20260312_191234.mp4</span> <span class="data-value">23.1 MB</span> <button class="btn" style="padding:2px 5px"><i class="fas fa-download"></i></button></div>
+                        <div class="data-item"><span class="data-key">Screenshot_20260312.png</span> <span class="data-value">456 KB</span> <button class="btn" style="padding:2px 5px"><i class="fas fa-download"></i></button></div>
+                        <div class="data-item"><span class="data-key">Screenshot_20260311.png</span> <span class="data-value">389 KB</span> <button class="btn" style="padding:2px 5px"><i class="fas fa-download"></i></button></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 🔴 LOGS SECTION -->
+        <div id="section-logs" class="content" style="display:none">
+            <div class="cmd-line">
+                <span class="prompt">📋 LOGS&gt;</span>
+                <input type="text" class="cmd-input" placeholder="Filter logs...">
+                <button class="btn"><i class="fas fa-filter"></i> FILTER</button>
+                <button class="btn"><i class="fas fa-download"></i> EXPORT</button>
+                <button class="btn btn-danger"><i class="fas fa-trash"></i> CLEAR</button>
+            </div>
+            
+            <div class="logs" style="height:600px;" id="logContainer">
+                <div class="log-entry"><span class="log-time">[15:47:22]</span> <span class="log-critical">☢️</span> New victim connected: 192.168.1.105 (Samsung S23 Ultra)</div>
+                <div class="log-entry"><span class="log-time">[15:45:33]</span> <span class="log-critical">💀</span> Data stolen from 10.0.0.23 - 45MB (SMS, Contacts, Photos)</div>
+                <div class="log-entry"><span class="log-time">[15:42:18]</span> <span class="log-critical">⚡</span> Command executed on 172.16.0.45: whoami → user</div>
+                <div class="log-entry"><span class="log-time">[15:38:04]</span> <span class="log-critical">💰</span> Ransomware activated on 3 devices - BTC: 1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa</div>
+                <div class="log-entry"><span class="log-time">[15:35:56]</span> <span class="log-critical">📦</span> New module downloaded: banking.ko (Banking Trojan Module)</div>
+                <div class="log-entry"><span class="log-time">[15:30:12]</span> <span class="log-critical">🔴</span> C2 server started on [2407:0:3002:fd75:8a22:ab97:5140:ccd8]:4444</div>
+                <div class="log-entry"><span class="log-time">[15:28:45]</span> <span class="log-critical">🔑</span> WiFi password stolen: WifiRumah:rumah123</div>
+                <div class="log-entry"><span class="log-time">[15:25:33]</span> <span class="log-critical">📱</span> Device info received from 192.168.1.105: Android 14, Samsung S23 Ultra</div>
+                <div class="log-entry"><span class="log-time">[15:22:18]</span> <span class="log-critical">📨</span> SMS OTP intercepted: BCA: 123456</div>
+                <div class="log-entry"><span class="log-time">[15:20:04]</span> <span class="log-critical">📍</span> Location update: -6.2088, 106.8456 (Jakarta, Indonesia)</div>
+                <div class="log-entry"><span class="log-time">[15:18:32]</span> <span class="log-critical">🦠</span> Worm spread to 5 new devices via Bluetooth</div>
+                <div class="log-entry"><span class="log-time">[15:15:47]</span> <span class="log-critical">💣</span> Self-destruct sequence aborted by operator</div>
+            </div>
+        </div>
+        
+        <!-- 🔴 STATS SECTION -->
+        <div id="section-stats" class="content" style="display:none">
+            <div class="grid-2">
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-chart-bar"></i> INFECTION GROWTH</div>
+                    <div class="data-panel" style="height:300px; display:flex; align-items:center; justify-content:center;">
+                        [📊 INFECTION GRAPH - 247 VICTIMS TOTAL]
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-chart-pie"></i> DEVICE TYPES</div>
+                    <div class="data-panel" style="height:300px; display:flex; align-items:center; justify-content:center;">
+                        [📊 DEVICE DISTRIBUTION - Android 89%, iOS 8%, Others 3%]
+                    </div>
+                </div>
+            </div>
+            
+            <div class="grid-3" style="margin-top:25px;">
+                <div class="card">
+                    <div class="card-title">TOP COUNTRIES</div>
+                    <div class="data-item">🇮🇩 Indonesia: 89</div>
+                    <div class="data-item">🇺🇸 USA: 45</div>
+                    <div class="data-item">🇧🇷 Brazil: 34</div>
+                    <div class="data-item">🇮🇳 India: 28</div>
+                    <div class="data-item">🇷🇺 Russia: 21</div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-title">TOP DEVICES</div>
+                    <div class="data-item">Samsung: 78</div>
+                    <div class="data-item">Xiaomi: 52</div>
+                    <div class="data-item">Oppo: 34</div>
+                    <div class="data-item">Vivo: 28</div>
+                    <div class="data-item">Google Pixel: 19</div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-title">TOP ANDROID</div>
+                    <div class="data-item">Android 15: 42%</div>
+                    <div class="data-item">Android 14: 31%</div>
+                    <div class="data-item">Android 13: 18%</div>
+                    <div class="data-item">Android 12: 9%</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 🔴 SETTINGS SECTION -->
+        <div id="section-settings" class="content" style="display:none">
+            <div class="grid-2">
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-cog"></i> C2 CONFIGURATION</div>
+                    
+                    <div class="data-item">C2 Server (IPv6):</div>
+                    <input type="text" value="2407:0:3002:fd75:8a22:ab97:5140:ccd8" style="width:100%; background:#1a0000; color:#ff0000; border:2px solid #ff0000; padding:10px; margin:10px 0;">
+                    
+                    <div class="data-item">Port:</div>
+                    <input type="number" value="4444" style="width:100%; background:#1a0000; color:#ff0000; border:2px solid #ff0000; padding:10px; margin:10px 0;">
+                    
+                    <div class="data-item">Fallback Servers:</div>
+                    <textarea style="width:100%; background:#1a0000; color:#ff0000; border:2px solid #ff0000; padding:10px; margin:10px 0; height:100px;">45.155.205.33:4444
+103.172.191.1:8080
+185.225.19.95:4444</textarea>
+                    
+                    <div class="data-item">Encryption Key:</div>
+                    <input type="password" value="MATRYOSHKA_RULES_2025" style="width:100%; background:#1a0000; color:#ff0000; border:2px solid #ff0000; padding:10px; margin:10px 0;">
+                    
+                    <button class="btn" style="width:100%; margin-top:20px;"><i class="fas fa-save"></i> SAVE SETTINGS</button>
+                </div>
+                
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-shield-alt"></i> SECURITY</div>
+                    
+                    <div class="data-item">Auto-start on boot:</div>
+                    <select style="width:100%; background:#1a0000; color:#ff0000; border:2px solid #ff0000; padding:10px; margin:10px 0;">
+                        <option selected>Enabled</option>
+                        <option>Disabled</option>
+                    </select>
+                    
+                    <div class="data-item">Hide icon:</div>
+                    <select style="width:100%; background:#1a0000; color:#ff0000; border:2px solid #ff0000; padding:10px; margin:10px 0;">
+                        <option selected>Enabled</option>
+                        <option>Disabled</option>
+                    </select>
+                    
+                    <div class="data-item">Anti-VM:</div>
+                    <select style="width:100%; background:#1a0000; color:#ff0000; border:2px solid #ff0000; padding:10px; margin:10px 0;">
+                        <option selected>Enabled</option>
+                        <option>Disabled</option>
+                    </select>
+                    
+                    <div class="data-item">Anti-Debug:</div>
+                    <select style="width:100%; background:#1a0000; color:#ff0000; border:2px solid #ff0000; padding:10px; margin:10px 0;">
+                        <option selected>Enabled</option>
+                        <option>Disabled</option>
+                    </select>
+                    
+                    <div class="data-item">Polymorphic mutations:</div>
+                    <input type="range" min="1" max="10" value="7" style="width:100%; margin:10px 0;">
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 🔴 NUCLEAR LAUNCH MODAL -->
+    <div class="modal" id="nuclearModal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal()">&times;</span>
+            <h2 style="color:#ff0000; text-align:center; font-size:2.5em; margin-bottom:30px;">☢️ NUCLEAR LAUNCH DETECTED ☢️</h2>
+            
+            <div class="nuclear-loader"></div>
+            
+            <div style="margin:30px 0;">
+                <div class="data-item">Target: <span class="data-value">2407:0:3002:fd75:8a22:ab97:5140:ccd8</span></div>
+                <div class="data-item">Warhead: <span class="data-value">50 MEGATONS</span></div>
+                <div class="data-item">Yield: <span class="data-value">100%</span></div>
+                <div class="progress"><div class="progress-fill" id="nuclearProgress" style="width:0%"></div></div>
+            </div>
+            
+            <div style="display:flex; gap:15px;">
+                <button class="btn" style="flex:1; padding:15px;" onclick="abortNuclear()">ABORT</button>
+                <button class="btn btn-danger" style="flex:1; padding:15px;" onclick="confirmNuclear()">LAUNCH</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 🔴 EKSTREM JAVASCRIPT -->
+    <script>
+        // Matrix Canvas
+        const canvas = document.getElementById('matrixCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        const chars = "☢️💀🔥💣☠️⚡⚠️🔴🔴🔴🔴🔴🔴";
+        const fontSize = 20;
+        const columns = canvas.width / fontSize;
+        const drops = [];
+        
+        for(let x = 0; x < columns; x++) {
+            drops[x] = 1;
+        }
+        
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = '#ff0000';
+            ctx.font = fontSize + 'px monospace';
+            ctx.shadowColor = '#ff0000';
+            ctx.shadowBlur = 10;
+            
+            for(let i = 0; i < drops.length; i++) {
+                const text = chars.charAt(Math.floor(Math.random() * chars.length));
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                
+                if(drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+        
+        setInterval(drawMatrix, 50);
+        
+        // Section Toggling
+        function showSection(section) {
+            document.querySelectorAll('[id^="section-"]').forEach(s => s.style.display = 'none');
+            document.getElementById(`section-${section}`).style.display = 'block';
+            
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            addLog(`Switched to ${section} section`);
+        }
+        
+        // Command Line
+        document.getElementById('mainCommand').addEventListener('keypress', function(e) {
+            if(e.key === 'Enter') {
+                const cmd = this.value;
+                addLog(`Executing: ${cmd}`);
+                
+                if(cmd === 'help') {
+                    alert('Available commands: nuke [ip], steal [ip], ransom [ip], spread, status, stats');
+                } else if(cmd.startsWith('nuke')) {
+                    openNuclearModal();
+                }
+                
+                this.value = '';
+            }
+        });
+        
+        // Victim Functions
+        function searchVictims() {
+            const search = document.getElementById('victimSearch').value;
+            addLog(`Searching for: ${search}`);
+        }
+        
+        function refreshVictims() {
+            addLog('Refreshing victim list...');
+        }
+        
+        function toggleAll(checkbox) {
+            const checkboxes = document.querySelectorAll('#victimsTable input[type="checkbox"]');
+            checkboxes.forEach(cb => cb.checked = checkbox.checked);
+        }
+        
+        function bulkAction(action) {
+            const count = document.querySelectorAll('#victimsTable input[type="checkbox"]:checked').length;
+            if(count === 0) {
+                alert('No victims selected');
+                return;
+            }
+            
+            if(action === 'nuke') {
+                if(confirm(`☢️ Nuke ${count} victims? This cannot be undone!`)) {
+                    openNuclearModal();
+                }
+            } else if(action === 'ransomware') {
+                if(confirm(`💰 Activate ransomware on ${count} victims?`)) {
+                    addLog(`Ransomware activated on ${count} victims`);
+                }
+            } else {
+                addLog(`${action} executed on ${count} victims`);
+            }
+        }
+        
+        // Data Functions
+        function browseFolder(path) {
+            document.getElementById('filePreview').innerHTML = `Browsing: ${path}\n\nLoading...`;
+            setTimeout(() => {
+                document.getElementById('filePreview').innerHTML = `
+                    📄 sms_20260313.json - 45KB\n
+                    📄 contacts.vcf - 128KB\n
+                    📄 call_log.xml - 23KB\n
+                    📄 passwords.txt - 5KB\n
+                    📄 location_history.json - 67KB
+                `;
+            }, 500);
+        }
+        
+        // Builder Functions
+        function buildPayload() {
+            document.getElementById('payloadOutput').innerHTML = 'Building payload...\n';
+            addLog('Building payload...');
+            
+            setTimeout(() => {
+                document.getElementById('payloadOutput').innerHTML = `
+// MATRYOSHKA PAYLOAD v9.0 - EKSTREM EDITION
+// Target: Android 15
+// C2: 2407:0:3002:fd75:8a22:ab97:5140:ccd8:4444
+
+package com.android.system.update;
+
+public class MainActivity extends Activity {
+    public void onCreate() {
+        // Persistence module
+        installPersistence();
+        
+        // Stealer module
+        stealAllData();
+        
+        // C2 connection
+        connectToC2();
+        
+        // Ransomware ready
+        activateRansomware();
+    }
+}
+
+// Payload size: 2.4MB
+// Detection rate: 0/60
+// Obfuscation: Level 5 (EKSTREM)
+                `;
+                addLog('✅ Payload built successfully');
+            }, 2000);
+        }
+        
+        function downloadPayload() {
+            addLog('Downloading payload...');
+            alert('Payload download started');
+        }
+        
+        function copyPayload() {
+            navigator.clipboard.writeText(document.getElementById('payloadOutput').innerText);
+            addLog('Payload copied to clipboard');
+        }
+        
+        function deployPayload() {
+            addLog('Deploying payload...');
+            alert('Payload deployment started');
+        }
+        
+        // Log Functions
+        function addLog(message) {
+            const container = document.getElementById('logContainer');
+            if(!container) return;
+            
+            const time = new Date().toLocaleTimeString();
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            entry.innerHTML = `<span class="log-time">[${time}]</span> ${message}`;
+            
+            container.insertBefore(entry, container.firstChild);
+            
+            if(container.children.length > 100) {
+                container.removeChild(container.lastChild);
+            }
+        }
+        
+        // Modal Functions
+        function openNuclearModal() {
+            document.getElementById('nuclearModal').classList.add('active');
+            
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 2;
+                document.getElementById('nuclearProgress').style.width = progress + '%';
+                
+                if(progress >= 100) {
+                    clearInterval(interval);
+                }
+            }, 100);
+        }
+        
+        function closeModal() {
+            document.getElementById('nuclearModal').classList.remove('active');
+        }
+        
+        function abortNuclear() {
+            closeModal();
+            addLog('☢️ Nuclear launch aborted');
+        }
+        
+        function confirmNuclear() {
+            closeModal();
+            addLog('☢️☢️☢️ NUCLEAR LAUNCH CONFIRMED ☢️☢️☢️');
+            
+            setTimeout(() => {
+                document.body.style.backgroundColor = '#ff0000';
+                document.body.style.transition = '2s';
+                document.body.innerHTML = '<div style="color:#ffffff; background:#000000; height:100vh; display:flex; align-items:center; justify-content:center; font-size:5em;">☢️ NUKED ☢️</div>';
+            }, 3000);
+        }
+        
+        function filter(type) {
+            showSection('victims');
+            addLog(`Filtering by: ${type}`);
+        }
+        
+        // Execute custom command
+        function executeCommand() {
+            const cmd = document.getElementById('customCommand').value;
+            if(cmd) {
+                addLog(`Executing: ${cmd}`);
+                document.getElementById('customCommand').value = '';
+            }
+        }
+        
+        // Window resize
+        window.onresize = function() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        };
+        
+        // Initial log
+        addLog('🔴 MATRYOSHKA C2 v9.0 initialized');
+        addLog('🔴 C2 Server: 2407:0:3002:fd75:8a22:ab97:5140:ccd8:4444');
+        addLog('🔴 System ready - 247 victims online');
+    </script>
+</body>
+</html>
